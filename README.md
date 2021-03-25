@@ -22,6 +22,7 @@ This section should list any major frameworks that bult for this project:
 * [Wireshark](https://www.wireshark.org/)
 * [Dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html)
 * [Kali](https://www.kali.org/)
+  
   Ettercap, Bettercap, Dnschef, metasploit, nmap ...
 
 
@@ -120,7 +121,7 @@ my $sourceIP = ’10.0.0.3’; # IP address of the attacking host #(A)
 my $destIP = ’10.0.0.8’; # IP address of the victim DNS server #(B)
 my $destPort = 53; # usual DNS port #(C)
 my $sourcePort = 5353; #(D)
-# Transaction IDs to use:
+#Transaction IDs to use:
 my @spoofing_set = 34000..34001; # Make it to be a large and apporpriate #(E)
 
 Use Dnschef to change the dns record 
