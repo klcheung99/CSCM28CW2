@@ -1,214 +1,139 @@
-<!--
-*** Thanks for checking out the Best-README-Template. If you have a suggestion
-*** that would make this better, please fork the repo and create a pull request
-*** or simply open an issue with the tag "enhancement".
-*** Thanks again! Now go create something AMAZING! :D
--->
 
 
+## Dnsspoof attack vulnerability
+Recently, an Israel Hebrew University’s cyber security research labs, JSOF, announced
+“DNSpooq - Kaminsky attack is back!”1. 7 new vulnerabilities are being disclosed in common DNS software dnsmasq, reminiscent of 2008 weaknesses in Internet DNS Architecture. Three of them related to Cache Poisoning Vulnerabilities which are labeled as CVE-2020-25684, CVE-2020-25685, CVE-2020-25686. And the remained four are Buffer Overflow Vulnerabilities which are labeled as CVE-2020-25687, CVE-2020-25683 ,CVE-2020-25682 and CVE-2020-25681.
+The Common Vulnerabilities and Exposures (CVE) of this analysis report are mainly focus on the Cache Poisoning Vulnerabilities part, which are labeled as CVE-2020-25684. this DNSpooqs(DNS spoofing) was listed in the common vulnerabilities and exposures list2 in 16th September, 2020.
 
-<!-- PROJECT SHIELDS -->
-<!--
-*** I'm using markdown "reference style" links for readability.
-*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
-*** See the bottom of this document for the declaration of the reference variables
-*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
-*** https://www.markdownguide.org/basic-syntax/#reference-style-links
--->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+dnsmasq limits the number of unanswered queries that are forwarded to an upstream server. According to the default setting, the maximum number of forwarded queries is 150. Therefore, if the maximum number of forwarded queries reached, the oldest queries will be dropped.
+The forwarded queries are represented using the frec (forward record) structure. The forward record structure is as same as DNS header packet structure. Each frec is paired with a 16 bit transaction ID (TXID) of the forwarded query. According to the default setting, the maximum number of sockets used for forwarding is 64.
+Each forward socket is bound to a random source port. In the DNS request packet, TXID and source port added 32 bit. However, since dnsmasq used same source port for multiple TXIDs. As result, the attacker only correctly guess one of 64 port, which is 1.5% successfully rate. And then correctly guess the TXID which formed by 16 bit. As result, since dnsmasq used the same port for multiple TXIDs. This increase the chance for the attacker to guess the port and IP of the DNS packet and make a fake DNS query and reply.
+In the picture below showed an instance, the user want to visit google.com, the client PC send the DNS request packet to DNS Server through the internet from local dnsmasq service. When the client PC waiting the DNS Server reply, the attacker send the fake DNS server reply packet to dnsmasq service. This will lead the user to a fraud and malicious website.
 
-
-
-<!-- PROJECT LOGO -->
-<br />
-<p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
-  </a>
-
-  <h3 align="center">Best-README-Template</h3>
-
-  <p align="center">
-    An awesome README template to jumpstart your projects!
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
-</p>
-
-
-
-<!-- TABLE OF CONTENTS -->
-<details open="open">
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
-  </ol>
-</details>
-
-
-
-<!-- ABOUT THE PROJECT -->
-## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+![image](https://user-images.githubusercontent.com/76594282/112460303-a6cba580-8d56-11eb-9f77-ef97383db20b.png)
 
 ### Built With
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+This section should list any major frameworks that bult for this project:
+* [Docker](https://www.docker.com/)
+* [Python 3.7](https://www.python.org/)
+* [Perl Source Code](https://www.perl.org/get.html) 
+* [CentOS](https://www.centos.org/)
+* [Wireshark](https://www.wireshark.org/)
+* [Dnsmasq](https://thekelleys.org.uk/dnsmasq/doc.html)
+* [Kali](https://www.kali.org/)
+  Ettercap, Bettercap, Dnschef, metasploit, nmap ...
+
 
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To build up the environment of the project by using Docker image. 
+A prepared image was built. Image included all environment and tool. 
 
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+1) To access the docker image, it require the privileged premeission to run the system service. It need to run the bash by using /usr/sbin/init 
+  docker run -d -t --name [container name] --cap-add=NET_ADMIN -h [host name] --privileged=true [the image that provided] /usr/sbin/init 
+2) To start that container 
+  docker start <container-name/ID>
+3) To run the bash of that container
+  docker exec -it <container-name/ID> bash
 
 ### Installation
+install the programme:
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+Python 3.7
+1) Download GCC compiler 
+  yum install gcc openssl-devel bzip2-devel libffi-devel zlib-devel
+2) Download Python 3.7
+  #cd /usr/src
+  #wget https://www.python.org/ftp/python/3.7.9/Python-3.7.9.tgz
+  #tar xzf Python-3.7.9.tgz
+3) Install Python 3.7
+  #cd Python-3.7.9
+  #./configure --enable-optimizations
+  #make altinstall
+4) Check the Pyhton Verision 
+  #python3.7 -V
+  
+Wireshark 1.10.14
+  #yum install wireshark-gnome
 
+Dnsmasq 2.83
+  #yum install dnsmasq
 
+## Structure of the system 
+![image](https://user-images.githubusercontent.com/76594282/112459341-a252bd00-8d55-11eb-9b08-80ee3489c665.png)
 
-<!-- USAGE EXAMPLES -->
-## Usage
+## Configuration for dnsmasq 
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Set up DNS server via Dnsmasq
+To set up dnsmasq as a DNS caching daemon on a single computer specify a listen-address directive, adding in the localhost IP address:
+/etc/dnsmasq.conf
+listen-address=::1,127.0.0.1
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+To set up the public nameserver
+/etc/dnsmasq.conf
+#Google's nameservers, for example
+server=8.8.8.8
+server=8.8.4.4
 
+To open the port 53 for DNS server 
+/etc/dnsmasq.conf
+Port = 53
+
+Uncomment expand-hosts to add the custom domain to hosts entries
+/etc/dnsmasq.conf
+expand-hosts
+
+To allow all dns packet route to dnsmasq service. 
+Set localhost addresses as the only nameservers in /etc/resolv.conf:
+/etc/resolv.conf
+nameserver ::1
+nameserver 127.0.0.1
+options trust-ad
+
+Testing
+#dnsmasq --test
+#systemctl start dnsmasq 
+#systemctl status dnsmasq 
+#nslookup google.com
+
+## Configuration for wiredshark 
+To keep filtering the DNS packet
+#tshark -f "src port 53" -n
+#tcpdump port 53 -w capture_file
+#tshark -r capture_file
+
+To do the penetration testing of getting the transcation ID, srouce and destination ip and port, arp address(MAC). 
 
 
 <!-- ROADMAP -->
-## Roadmap
+## Exploit
+Modern DNS protocol is using 16 bit transaction id in the Header section of a DNS message. It is easy to use brithday attack to crack the transcation id.  
+![image](https://user-images.githubusercontent.com/76594282/112459006-4851f780-8d55-11eb-9ac2-13af2e0d599d.png)
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+Edit the Perl Source Code and edit the transaction ID, dest ip of the dns response packet.
+/dns_fake_response.pl
+my $sourceIP = ’10.0.0.3’; # IP address of the attacking host #(A)
+my $destIP = ’10.0.0.8’; # IP address of the victim DNS server #(B)
+my $destPort = 53; # usual DNS port #(C)
+my $sourcePort = 5353; #(D)
+# Transaction IDs to use:
+my @spoofing_set = 34000..34001; # Make it to be a large and apporpriate #(E)
 
+Use Dnschef to change the dns record 
+dnschef --fakeip=192.168.0.2 --fakedomains=fake.com --interface=0.0.0.0
+
+Use Bettercap/ettercap send the ARP message and treat the host of attacker as dns server and then change the dns records. 
+
+## Demonstration of patch, and exploitation failure
+Currently Dnsmasq already update its latest revision to 2.83 immediately fixed the loophole with latest patch after Israel Hebrew University’s cyber security research labs publish these CVEs to pbulic. It use multiple ports for multiple TXIDs and increase the security of DNSSEC validation. These CVEs currently cannot be successfully exploitated. 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+## Reference 
+Avinash Kak. (2021). Lecture 17: DNS and the DNS Cache Poisoning Attack. Purdue University. https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture17.pdf
+DNSpooq: Cache Poisoning and RCE in Popular DNS Forwarder dnsmasq. (2021). The JSOF Research Lab. https://www.jsof-tech.com/wp-content/uploads/2021/01/DNSpooq-Technical-WP.pdf
+Whittle, M. (2021, January 12). Ethical Hacking (Part 9): DNS Hijacking & Credential Harvesting. Medium. https://levelup.gitconnected.com/ethical-hacking-part-9-dns-hijacking-credential-harvesting-db57302e5131
