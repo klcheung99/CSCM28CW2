@@ -138,3 +138,4 @@ Currently Dnsmasq already update its latest revision to 2.83 immediately fixed t
 Avinash Kak. (2021). Lecture 17: DNS and the DNS Cache Poisoning Attack. Purdue University. https://engineering.purdue.edu/kak/compsec/NewLectures/Lecture17.pdf
 DNSpooq: Cache Poisoning and RCE in Popular DNS Forwarder dnsmasq. (2021). The JSOF Research Lab. https://www.jsof-tech.com/wp-content/uploads/2021/01/DNSpooq-Technical-WP.pdf
 Whittle, M. (2021, January 12). Ethical Hacking (Part 9): DNS Hijacking & Credential Harvesting. Medium. https://levelup.gitconnected.com/ethical-hacking-part-9-dns-hijacking-credential-harvesting-db57302e5131
+Teppei Fukuda(2021, January) DNSpooq PoC - dnsmasq cache poisoning (CVE-2020-25686, CVE-2020-25684, CVE-2020-25685) https://github.com/knqyf263/dnspooq
